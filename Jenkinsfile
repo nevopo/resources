@@ -9,7 +9,7 @@ pipeline {
                     deleteDir()
                     
                     // Clone the GitHub repository
-                    git url: 'https://github.com/heroku/node-js-getting-started.git', branch: 'main'
+                    git url: 'https://github.com/expressjs/express.git', branch: 'main'
                 }
             }
         }
@@ -22,14 +22,7 @@ pipeline {
                 }
             }
         }
-               stage('Install Dependencies') {
-            steps {
-                script {
-                    // Install npm dependencies
-                    sh 'npm install'
-                }
-            }
-        }
+        
         stage('Build') {
             steps {
                 script {
