@@ -8,6 +8,10 @@ pipeline {
                     // Simple echo
                     sh '''
                     echo "Running Bash commands..."
+                    whoami 
+                    ls -al
+                    env
+                    java -version
                     '''
 
                     // cURL command
