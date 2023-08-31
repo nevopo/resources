@@ -1,31 +1,33 @@
 pipeline {
     agent any
-
+    tools {
+        jfrog 'jfrog-cli'
+    }
     stages {
-        stage('Run Bash Commands') {
+        stage('Clone') {
             steps {
-                script {
-                    // Simple echo
-                    sh '''
-                    echo "Running Bash commands..."
-                    whoami 
-                    ls -al
-                    env
-                    java -version
-                    '''
+                git branch: 'master', url: "https://github.com/jfrog/project-examples.git"
+            }
+        }
 
-                    // cURL command
-                    sh '''
-                    echo "Executing cURL to the HTTP DUMP..."
-                    curl -v https://httpdump.app/dumps/6a42adf4-7ae9-434a-91b5-4ea47f82e801
-                    '''
+        stage('Exec npm commands') {
+            steps {
+                dir('npm-example') {
+                    // Configure npm project's repositories
+                    jf 'npm-config --repo-resolve testpipe-npm --repo-deploy testpipe-npm'
 
-                    // Another Bash command (just as an example)
-                    sh '''
-                    echo "Finished cURL. Running another Bash command..."
-                    date
-                    '''
+                    // Install dependencies
+                    jf 'npm install'
+
+                    // Pack and deploy the npm package
+                    jf 'npm publish'
                 }
+            }
+        }
+
+        stage('Publish build info') {
+            steps {
+                jf 'rt build-publish'
             }
         }
     }
