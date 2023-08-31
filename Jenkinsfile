@@ -9,7 +9,7 @@ pipeline {
                     deleteDir()
                     
                     // Clone the GitHub repository
-                    git url: 'https://github.com/expressjs/express.git', branch: 'main'
+                    git url: 'https://github.com/heroku/node-js-sample.git', branch: 'main'
                 }
             }
         }
@@ -26,8 +26,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Run npm build command (this example doesn't have a build script, so just echoing a message)
-                    sh 'echo "Build step"'
+                    // Run npm build command
+                    sh 'npm run build'
                 }
             }
         }
