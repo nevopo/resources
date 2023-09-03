@@ -17,8 +17,7 @@ pipeline {
                 dir('/tmp/vim') {
                     // Navigate into the vim directory and run the build commands
                     sh '''
-		    cd src
-			            make clean
+			make clean
                         make
                     '''
                 }
