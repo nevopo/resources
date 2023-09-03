@@ -1,26 +1,36 @@
 pipeline {
     agent any
-    
+
     stages {
-        stage('Clone Repository') {
+        stage('Clone Vim repository') {
             steps {
-                script {
-                    // Clean workspace before cloning
-                    deleteDir()
-                    
-                    // Clone the GitHub repository
-                    git url: 'https://github.com/heroku/node-js-sample.git', branch: 'main'
+                // Clone the Vim repository to /tmp/vim
+                
+                sh '''
+                    rm -rf /tmp/vim
+                    mkdir /tmp/vim
+                    git clone https://github.com/vim/vim.git /tmp/vim
+                '''
+            }
+        }
+
+        stage('Build Vim') {
+            steps {
+                dir('/tmp/vim') {
+                    // Navigate into the vim directory and run the build commands
+                    sh '''
+			            make clean
+                        make
+                    '''
                 }
             }
         }
-        
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    // Install npm dependencies
-                    sh 'npm install'
-                }
-            }
+    }
+
+    post {
+        always {
+            // Optional: Cleanup the /tmp/vim directory after build
+            sh 'rm -rf /tmp/vim'
         }
     }
 }
