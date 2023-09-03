@@ -7,9 +7,7 @@ pipeline {
                 // Clone the Vim repository to /tmp/vim
                 
                 sh '''
-                    rm -rf /tmp/vim
-                    mkdir /tmp/vim
-                    git clone https://github.com/vim/vim.git /tmp/vim
+                
                 '''
             }
         }
@@ -30,7 +28,7 @@ pipeline {
     post {
         always {
             // Optional: Cleanup the /tmp/vim directory after build
-            sh 'rm -rf /tmp/vim'
+            sh ''
         }
     }
 }
