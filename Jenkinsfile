@@ -7,7 +7,7 @@ pipeline {
                 // Clone the Vim repository to /tmp/vim
                 
                 sh '''
-                
+                echo Starting
                 '''
             }
         }
@@ -29,7 +29,7 @@ pipeline {
     post {
         always {
             // Optional: Cleanup the /tmp/vim directory after build
-            sh ''
+            sh 'echo Finishing'
         }
     }
 }
