@@ -13,7 +13,7 @@ pipeline {
 
         stage('Build Vim') {
             steps {
-                dir('/tmp/vim') {
+                dir('/var/lib/jenkins/vim') {
                     // Navigate into the vim directory and run the build commands
                     sh '''
 			make clean
