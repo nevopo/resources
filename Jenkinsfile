@@ -7,7 +7,6 @@ pipeline {
                 
                 sh '''
                 echo Starting
-		jytjytj
                 '''
             }
         }
