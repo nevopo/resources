@@ -6,7 +6,7 @@ pipeline {
                 // Clone the Vim repository to /tmp/vim
                 
                 sh '''
-                echo Starting
+                echo Starting'
                 '''
             }
         }
